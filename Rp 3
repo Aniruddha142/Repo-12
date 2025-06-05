@@ -1,0 +1,95 @@
+a)
+#include <stdio.h>
+#define INF 99999
+#define V 4 // Number of vertices in the graph
+// Function to print the solution matrix
+void printSolution(int dist[][V]) {
+ printf("The following matrix shows the shortest distances"
+ " between every pair of vertices:\n");
+ for (int i = 0; i < V; i++) {
+ for (int j = 0; j < V; j++) {
+ if (dist[i][j] == INF)
+ printf("INF\t");
+ else
+ printf("%d\t", dist[i][j]);
+ }
+ printf("\n");
+ }
+}
+// Floyd Warshall algorithm
+void floydWarshall(int graph[][V]) {
+ int dist[V][V];
+ // Initialize distance matrix
+ for (int i = 0; i < V; i++)
+ for (int j = 0; j < V; j++)
+ dist[i][j] = graph[i][j];
+ // Update distance matrix considering all intermediate vertices
+ for (int k = 0; k < V; k++) {
+ for (int i = 0; i < V; i++) {
+ for (int j = 0; j < V; j++) {
+ if (dist[i][k] + dist[k][j] < dist[i][j])
+ dist[i][j] = dist[i][k] + dist[k][j];
+ }
+ }
+ }
+ // Print the solution
+ printSolution(dist);
+16
+Dept(s). of AI&ML and CD
+}
+int main() {
+ int graph[V][V] = {
+ {0, INF, 3, INF},
+ {2, 0, INF, INF},
+ {INF, 7, 0, 1},
+ {6, INF, INF, 0}
+ };
+ floydWarshall(graph);
+ return 0;
+}
+b)
+#include <stdio.h>
+#define V 4 // Number of vertices in the graph
+// Function to print the transitive closure matrix
+void printTransitiveClosure(int closure[][V]) {
+ printf("Transitive Closure Matrix:\n");
+ for (int i = 0; i < V; i++) {
+ for (int j = 0; j < V; j++) {
+ printf("%d ", closure[i][j]);
+ }
+ printf("\n");
+ }
+}
+// Warshall's algorithm to find the transitive closure
+void transitiveClosure(int graph[][V]) {
+ int closure[V][V];
+ // Initialize the closure matrix with the given graph
+ for (int i = 0; i < V; i++) {
+ for (int j = 0; j < V; j++) {
+ closure[i][j] = graph[i][j];
+ }
+ }
+ // Update closure matrix by considering all intermediate vertices
+ for (int k = 0; k < V; k++) {
+ for (int i = 0; i < V; i++) {
+ for (int j = 0; j < V; j++) {
+ closure[i][j] = closure[i][j] || (closure[i][k] && closure[k][j]);
+ }
+ }
+ }
+ // Print the transitive closure matrix
+ printTransitiveClosure(closure);
+}
+18
+Dept(s). of AI&ML and CD
+int main() {
+ int graph[V][V] = {
+ {1, 1, 0, 1},
+ {0, 1, 1, 0},
+ {0, 0, 1, 1},
+ {0, 0, 0, 1}
+ };
+ // Find and print the transitive closure
+ transitiveClosure(graph);
+ return 0;
+}
